@@ -1,0 +1,66 @@
+package com.example.tobinornottobin2.ObjectDetection.lib_task_api
+
+apply plugin: 'com.android.library'
+apply plugin: 'com.android.build.api.attributes.BuildTypeAttr'
+apply plugin: 'com.android.application'
+apply plugin: 'com.onesignal.androidsdk.onesignal-gradle-plugin'
+
+android {
+    compileSdkVersion 29
+    buildToolsVersion "29.0.3"
+
+    defaultConfig {
+        minSdkVersion 21
+        targetSdkVersion 29
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+    allprojects {
+        repositories {
+            jcenter()
+            maven { url "https://maven.google.com" }
+        }}
+
+    // Code to install object detection sourced from https://www.tensorflow.org/lite/inference_with_metadata/task_library/object_detector
+    // Specify tflite file should not be compressed for the app apk
+    aaptOptions {
+        noCompress "tflite"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    aaptOptions {
+        noCompress "tflite"
+    }
+
+    lintOptions {
+        checkReleaseBuilds false
+        // Or, if you prefer, you can continue to check for errors in release
+        // builds, but continue the build even when errors are found.
+        abortOnError false
+    }
+
+    compileOptions {
+        sourceCompatibility 1.8
+        targetCompatibility 1.8
+    }
+}
+configurations {
+    compileClasspath
+}co
+dependencies {
+    
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+
+    // Build off of nightly TensorFlow Lite Task Library
+    implementation('org.tensorflow:tensorflow-lite:2.4.0-nightly') { changing = true }
+    implementation('org.tensorflow:tensorflow-lite-task-vision:0.1.0-nightly') { changing = true }
+    implementation ('org.tensorflow:tensorflow-lite-metadata:0.1.0-nightly') { changing = true }
+ }
