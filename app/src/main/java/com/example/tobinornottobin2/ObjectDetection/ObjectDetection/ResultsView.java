@@ -17,7 +17,7 @@ package com.example.tobinornottobin2.ObjectDetection.ObjectDetection;
 
 import java.util.List;
 
-import ObjectDetection.Detector.Recognition;
+import com.example.tobinornottobin2.ObjectDetection.ObjectDetection.Detector.Recognition;
 
 
 public interface ResultsView {

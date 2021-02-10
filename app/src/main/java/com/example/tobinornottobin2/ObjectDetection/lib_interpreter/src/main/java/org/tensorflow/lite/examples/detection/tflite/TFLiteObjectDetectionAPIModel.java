@@ -56,7 +56,7 @@ import static java.lang.Math.min;
  * -
  * https://github.com/tensorflow/models/blob/master/research/object_detection/g3doc/running_on_mobile_tensorflowlite.md#running-our-model-on-android
  */
-public class TFLiteObjectDetectionAPIModel implements ObjectDetection.Detector {
+public class TFLiteObjectDetectionAPIModel implements com.example.tobinornottobin2.ObjectDetection.ObjectDetection.Detector {
   private static final String TAG = "TFLiteObjectDetectionAPIModelWithInterpreter";
 
   // Only return this many results.

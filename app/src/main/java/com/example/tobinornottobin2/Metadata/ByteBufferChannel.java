@@ -14,8 +14,9 @@ package com.example.tobinornottobin2.Metadata;
 import java.nio.ByteBuffer;
 import java.nio.channels.NonWritableChannelException;
 
-import static Metadata.Preconditions.checkArgument;
-import static Metadata.Preconditions.checkNotNull;
+import static com.example.tobinornottobin2.Metadata.Preconditions.checkNotNull;
+import static com.example.tobinornottobin2.Metadata.Preconditions.checkArgument;
+
 import static java.lang.Math.min;
 
 //import static org.tensorflow.lite.support.metadata.Preconditions.checkArgument;

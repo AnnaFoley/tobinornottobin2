@@ -39,15 +39,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import ObjectDetection.Detector.Recognition;
-import ObjectDetection.InstrumentationRegistry.*;
-import lib_task_api.src.main.java.org.tensorflow.lite.examples.detection.tflite.TFLiteObjectDetectionAPIModel;
+import com.example.tobinornottobin2.ObjectDetection.ObjectDetection.Detector.Recognition;
+import com.example.tobinornottobin2.lib_task_api.src.main.java.org.tensorflow.lite.examples.detection.tflite.TFLiteObjectDetectionAPIModel;
 
-import static ObjectDetection.InstrumentationRegistry.getContext;
 import static java.lang.Math.abs;
 import static java.lang.Math.max;
 import static java.lang.Math.min;
+import static java.security.AccessController.getContext;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 /** Golden test for Object Detection Reference app. */
 @RunWith(AndroidJUnit4.class)
@@ -68,7 +68,7 @@ public class ScanService { //occurs whwn the scan button is cliked on the scan p
     public void setUp() throws IOException { // method to begin the detection of the object you need to set up
         detector =
                 TFLiteObjectDetectionAPIModel.create(   //calling the detection API and creating a a variable for each of the following to store the information gathered from the scan/images
-                        InstrumentationRegistry.getInstrumentation()(getContext()),
+                        InstrumentationRegistry.getInstrumentation().getContext(),
                         MODEL_FILE,
                         LABELS_FILE,
                         MODEL_INPUT_SIZE,
@@ -87,6 +87,9 @@ public class ScanService { //occurs whwn the scan button is cliked on the scan p
         cropToFrameTransform = new Matrix();
         frameToCropTransform.invert(cropToFrameTransform);
     }
+
+
+
 
     @Test // test to see if the scan can recongise the object from the images provided.
     public void detectionResultsShouldNotChange() throws Exception {
@@ -108,7 +111,7 @@ public class ScanService { //occurs whwn the scan button is cliked on the scan p
                     break;
                 }
             }
-            assertThat(matched).isTrue();
+            assertTrue(matched);
         }
 
     }

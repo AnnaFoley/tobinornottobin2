@@ -24,7 +24,7 @@ import android.view.View;
 
 
 /** A {@link TextureView} that can be adjusted to a specified aspect ratio. */
-public class AutoFitTextureView  {
+public class  AutoFitTextureView  extends TextureView{
     private int ratioWidth = 0;
     private int ratioHeight = 0;
 
@@ -37,7 +37,7 @@ public class AutoFitTextureView  {
     }
 
     public AutoFitTextureView(final Context context, final AttributeSet attrs, final int defStyle) {
-        super();
+        super(context, attrs, defStyle);
     }
 
     /**
@@ -57,13 +57,11 @@ public class AutoFitTextureView  {
         requestLayout();
     }
 
-    private void requestLayout() {
-    }
 
 
 
     public void onMeasure(final int widthMeasureSpec, final int heightMeasureSpec) {
-        onMeasure(widthMeasureSpec, heightMeasureSpec);
+        measure(widthMeasureSpec, heightMeasureSpec);
         final int width = View.MeasureSpec.getSize(widthMeasureSpec);
         final int height = View.MeasureSpec.getSize(heightMeasureSpec);
         if (0 == ratioWidth || 0 == ratioHeight) {
@@ -77,31 +75,25 @@ public class AutoFitTextureView  {
         }
     }
 
-    private void setMeasuredDimension(int width, int height) {
-    }
 
 
 
 
-    public  int getHeight() {
-        return 0;
-    }
 
-    public void setSurfaceTextureListener(TextureView.SurfaceTextureListener surfaceTextureListener) {
-    }
 
-    public SurfaceTexture getSurfaceTexture() {
-        return null;
-    }
+   public void setSurfaceTextureListener(TextureView.SurfaceTextureListener surfaceTextureListener) {
+   }
+
+   public SurfaceTexture getSurfaceTexture() {
+       return null;
+   }
 
     public void setTransform(Matrix matrix) {
     }
 
     public boolean isAvailable() {
-        return false;
+      return false;
     }
 
-    public int getWidth() {
-        return 0;
-    }
+
 }

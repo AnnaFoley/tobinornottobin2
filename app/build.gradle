@@ -36,6 +36,8 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -89,12 +91,13 @@ dependencies {
     //TODO: Add TF Lite
     implementation 'org.tensorflow:tensorflow-lite:2.4.0'
     // Import the Task Vision Library dependency - sourced from  https://www.tensorflow.org/lite/inference_with_metadata/task_library/object_detector
-    implementation 'org.tensorflow:tensorflow-lite-task-vision:0.1.0-nightly'
+    implementation 'org.tensorflow:tensorflow-lite-task-vision:0.1.0'
     implementation fileTree(dir:  "libs", include: ['*.jar','*.aar'])
     implementation 'org.tensorflow:tensorflow-lite-metadata:0.1.0'
     implementation 'com.google.firebase:firebase-firestore:22.0.2'
-    interpreterImplementation project(":lib_interpreter")
-    androidTestImplementation project(":lib_task_api")
+    //interpreterImplementation project(":lib_interpreter")
+    //androidTestImplementation project(":lib_task_api")
+
     implementation 'org.tensorflow:tensorflow-lite-task-vision:0.1.0'
 
     //connect to firebase
@@ -122,6 +125,6 @@ dependencies {
     // TODO: Add TFLite dependencies
     implementation('org.tensorflow:tensorflow-lite:2.4.0') { changing = true }
     implementation('org.tensorflow:tensorflow-lite-gpu:0.0.0-nightly') { changing = true }
-    implementation('org.tensorflow:tensorflow-lite-support:0.1.0-nightly') { changing = true }
-    implementation 'com.google.android.gms:play-services:12.0.1'
+    implementation('org.tensorflow:tensorflow-lite-support:0.1.0') { changing = true }
+
 }

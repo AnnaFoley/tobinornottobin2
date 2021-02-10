@@ -55,7 +55,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.example.tobinornottobin.R;
+import com.example.tobinornottobin2.R;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -64,9 +64,13 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
+import com.example.tobinornottobin2.ObjectDetection.ObjectDetection.AutoFitTextureView;
+import com.example.tobinornottobin2.ObjectDetection.ObjectDetection.Logger;
+import com.example.tobinornottobin2.R.id;
 
-import ObjectDetection.AutoFitTextureView;
+import org.junit.Before;
 
+import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
 
 /**
  * Camera Connection Fragment that captures images from camera.
@@ -84,7 +88,9 @@ public class CameraConnectionFragment extends Fragment {
      */
     private static final int MINIMUM_PREVIEW_SIZE = 320;
 
-    /** Conversion from screen rotation to JPEG orientation. */
+    /**
+     * Conversion from screen rotation to JPEG orientation.
+     */
     private static final SparseIntArray ORIENTATIONS = new SparseIntArray();
 
     private static final String FRAGMENT_DIALOG = "dialog";
@@ -96,13 +102,21 @@ public class CameraConnectionFragment extends Fragment {
         ORIENTATIONS.append(Surface.ROTATION_270, 180);
     }
 
-    /** A {@link Semaphore} to prevent the app from exiting before closing the camera. */
+    /**
+     * A {@link Semaphore} to prevent the app from exiting before closing the camera.
+     */
     private final Semaphore cameraOpenCloseLock = new Semaphore(1);
-    /** A {@link OnImageAvailableListener} to receive frames as they are available. */
+    /**
+     * A {@link OnImageAvailableListener} to receive frames as they are available.
+     */
     private final OnImageAvailableListener imageListener;
-    /** The input size in pixels desired by TensorFlow (width and height of a square bitmap). */
+    /**
+     * The input size in pixels desired by TensorFlow (width and height of a square bitmap).
+     */
     private final Size inputSize;
-    /** The layout identifier to inflate for this Fragment. */
+    /**
+     * The layout identifier to inflate for this Fragment.
+     */
     private final int layout;
 
     private final ConnectionCallback cameraConnectionCallback;
@@ -112,37 +126,63 @@ public class CameraConnectionFragment extends Fragment {
                 public void onCaptureProgressed(
                         final CameraCaptureSession session,
                         final CaptureRequest request,
-                        final CaptureResult partialResult) {}
+                        final CaptureResult partialResult) {
+                }
 
                 @Override
                 public void onCaptureCompleted(
                         final CameraCaptureSession session,
                         final CaptureRequest request,
-                        final TotalCaptureResult result) {}
+                        final TotalCaptureResult result) {
+                }
             };
-    /** ID of the current {@link CameraDevice}. */
+    /**
+     * ID of the current {@link CameraDevice}.
+     */
     private String cameraId;
-    /** An {@link AutoFitTextureView} for camera preview. */
+    /**
+     * An {@link AutoFitTextureView} for camera preview.
+     */
     private AutoFitTextureView textureView;
-    /** A {@link CameraCaptureSession } for camera preview. */
+    /**
+     * A {@link CameraCaptureSession } for camera preview.
+     */
     private CameraCaptureSession captureSession;
-    /** A reference to the opened {@link CameraDevice}. */
+    /**
+     * A reference to the opened {@link CameraDevice}.
+     */
     private CameraDevice cameraDevice;
-    /** The rotation in degrees of the camera sensor from the display. */
+    /**
+     * The rotation in degrees of the camera sensor from the display.
+     */
     private Integer sensorOrientation;
-    /** The {@link Size} of camera preview. */
+    /**
+     * The {@link Size} of camera preview.
+     */
     private Size previewSize;
-    /** An additional thread for running tasks that shouldn't block the UI. */
+    /**
+     * An additional thread for running tasks that shouldn't block the UI.
+     */
     private HandlerThread backgroundThread;
-    /** A {@link Handler} for running tasks in the background. */
+    /**
+     * A {@link Handler} for running tasks in the background.
+     */
     private Handler backgroundHandler;
-    /** An {@link ImageReader} that handles preview frame capture. */
+    /**
+     * An {@link ImageReader} that handles preview frame capture.
+     */
     private ImageReader previewReader;
-    /** {@link CaptureRequest.Builder} for the camera preview */
+    /**
+     * {@link CaptureRequest.Builder} for the camera preview
+     */
     private CaptureRequest.Builder previewRequestBuilder;
-    /** {@link CaptureRequest} generated by {@link #previewRequestBuilder} */
+    /**
+     * {@link CaptureRequest} generated by {@link #previewRequestBuilder}
+     */
     private CaptureRequest previewRequest;
-    /** {@link CameraDevice.StateCallback} is called when {@link CameraDevice} changes its state. */
+    /**
+     * {@link CameraDevice.StateCallback} is called when {@link CameraDevice} changes its state.
+     */
     private final CameraDevice.StateCallback stateCallback =
             new CameraDevice.StateCallback() {
                 @Override
@@ -195,8 +235,10 @@ public class CameraConnectionFragment extends Fragment {
                 }
 
                 @Override
-                public void onSurfaceTextureUpdated(final SurfaceTexture texture) {}
+                public void onSurfaceTextureUpdated(final SurfaceTexture texture) {
+                }
             };
+    private Object AutoFitTextureView;
 
 
     @SuppressLint("ValidFragment")
@@ -216,8 +258,8 @@ public class CameraConnectionFragment extends Fragment {
      * width and height are at least as large as the minimum of both, or an exact match if possible.
      *
      * @param choices The list of sizes that the camera supports for the intended output class
-     * @param width The minimum desired width
-     * @param height The minimum desired height
+     * @param width   The minimum desired width
+     * @param height  The minimum desired height
      * @return The optimal {@code Size}, or an arbitrary one if none were big enough
      */
     protected static Size chooseOptimalSize(final Size[] choices, final int width, final int height) {
@@ -292,11 +334,11 @@ public class CameraConnectionFragment extends Fragment {
             final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
         return inflater.inflate(layout, container, false);
     }
-
     @Override
-    public void onViewCreated(final View view, final Bundle savedInstanceState) {
-        textureView = (AutoFitTextureView).view.findViewById(R.id.texture);
+    public void onViewCreated( final View view, final Bundle savedInstanceState) {
+        textureView = (AutoFitTextureView) view.findViewById(R.id.texture);
     }
+
 
     @Override
     public void onActivityCreated(final Bundle savedInstanceState) {
@@ -363,9 +405,9 @@ public class CameraConnectionFragment extends Fragment {
         } catch (final NullPointerException e) {
             // Currently an NPE is thrown when the Camera2API is used but not supported on the
             // device this code runs.
-            ErrorDialog.newInstance(getString(R.string.tfe_ic_camera_error))
+            ErrorDialog.newInstance("")
                     .show(getChildFragmentManager(), FRAGMENT_DIALOG);
-            throw new IllegalStateException(getString(R.string.tfe_ic_camera_error));
+            throw new IllegalStateException("");
         }
 
         cameraConnectionCallback.onPreviewSizeChosen(previewSize, sensorOrientation);

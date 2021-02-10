@@ -29,8 +29,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.zip.ZipException;
 
-import static Metadata.Preconditions.checkArgument;
-import static Metadata.Preconditions.checkNotNull;
+import static com.example.tobinornottobin2.Metadata.Preconditions.checkArgument;
+import static com.example.tobinornottobin2.Metadata.Preconditions.checkNotNull;
 
 /**
  * Reads uncompressed files from the TFLite model, a zip file.

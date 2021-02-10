@@ -31,8 +31,8 @@ import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.tobinornottobin.R;
-
+import com.example.tobinornottobin2.R;
+import com.example.tobinornottobin2.ObjectDetection.ObjectDetection.AutoFitTextureView;
 import java.io.IOException;
 import java.util.List;
 
@@ -111,9 +111,8 @@ public class LegacycameraConnectionFragment extends Fragment {
             final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
         return inflater.inflate(layout, container, false);
     };
-
     @Override
-    public void onViewCreated(final View view, final Bundle savedInstanceState) {
+    public void onViewCreated(final View view,  final Bundle savedInstanceState) {
         textureView = (AutoFitTextureView) view.findViewById(R.id.texture);
     }
 

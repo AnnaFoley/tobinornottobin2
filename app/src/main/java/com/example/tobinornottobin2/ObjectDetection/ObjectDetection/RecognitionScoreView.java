@@ -24,7 +24,7 @@ import android.view.View;
 
 import java.util.List;
 
-import ObjectDetection.Detector.Recognition;
+import com.example.tobinornottobin2.ObjectDetection.ObjectDetection.Detector.Recognition;
 
 
 public class RecognitionScoreView extends View implements ResultsView {

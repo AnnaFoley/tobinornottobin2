@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static Metadata.Preconditions.checkArgument;
+import static com.example.tobinornottobin2.Metadata.Preconditions.checkArgument;
 
 /** Extracts model metadata information out of TFLite metadata FlatBuffer. */
 final class ModelMetadataInfo {

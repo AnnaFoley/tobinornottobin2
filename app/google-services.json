@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "731797278177",
+    "project_id": "tobinorbottobin",
+    "storage_bucket": "tobinorbottobin.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:731797278177:android:ab7b34dda14cdd68c156a0",
+        "android_client_info": {
+          "package_name": "com.example.tobinornottobin2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "731797278177-mtq58sul6del3gujsomr4t4krhhnppar.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCkf-WT8ee1E7YV7L6StmRkBfXsvaXCzfY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "731797278177-mtq58sul6del3gujsomr4t4krhhnppar.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

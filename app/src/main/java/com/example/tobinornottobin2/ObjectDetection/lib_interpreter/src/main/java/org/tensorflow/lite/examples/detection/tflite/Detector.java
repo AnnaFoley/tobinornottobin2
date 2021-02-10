@@ -22,7 +22,7 @@ import java.util.List;
 
 /** Generic interface for interacting with different recognition engines. */
 public interface Detector {
-  List<ObjectDetection.Detector.Recognition> recognizeImage(Bitmap bitmap);
+  List<com.example.tobinornottobin2.ObjectDetection.ObjectDetection.Detector.Recognition> recognizeImage(Bitmap bitmap);
 
   void enableStatLogging(final boolean debug);
 

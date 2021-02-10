@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+
+    android:id="@+id/coordinatorLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="ObjectDetection.CameraActivity.CameraActivity" />
+
+    <SearchView
+        android:id="@+id/BarSearch"
+        android:layout_width="246dp"
+        android:layout_height="22dp"
+        android:layout_marginStart="135dp"
+        android:layout_marginTop="28dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="607dp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="visible">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/barmenubar2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="671dp"
+            android:background="#81CA84"
+            android:minHeight="?attr/actionBarSize"
+            android:theme="?attr/actionBarTheme"
+            android:visibility="visible"
+            tools:visibility="visible" />
+    </SearchView>
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/barmenubar3"
+        android:layout_width="381dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="548dp"
+        android:layout_marginBottom="9dp"
+        android:background="#CAEDCB"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        android:visibility="visible"
+        app:layout_anchorGravity="top|center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.879" />
+
+    <ImageButton
+        android:id="@+id/btnLogin"
+        style="@android:style/Widget.Holo.Light.ImageButton"
+        android:layout_width="63dp"
+        android:layout_height="57dp"
+        android:layout_marginStart="41dp"
+        android:layout_marginTop="560dp"
+        android:layout_marginEnd="289dp"
+        android:layout_marginBottom="40dp"
+        android:contentDescription="login_button"
+        android:scaleType="centerCrop"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.371"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.868"
+        app:srcCompat="@drawable/login_circle_line" />
+
+    <ImageButton
+        android:id="@+id/btnClimateChange"
+        style="@android:style/Widget.Holo.Light.ImageButton"
+        android:layout_width="66dp"
+        android:layout_height="57dp"
+        android:layout_marginStart="164dp"
+        android:layout_marginTop="600dp"
+        android:layout_marginEnd="173dp"
+        android:layout_marginBottom="77dp"
+        android:background="#FFFFFF"
+        android:contentDescription="climatechange_button"
+        android:scaleType="centerCrop"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.467"
+        app:srcCompat="@drawable/earth_line" />
+
+    <Button
+        android:id="@+id/btnScan"
+        android:layout_width="123dp"
+        android:layout_height="57dp"
+        android:layout_marginStart="150dp"
+        android:layout_marginTop="330dp"
+        android:layout_marginEnd="148dp"
+        android:layout_marginBottom="223dp"
+        android:backgroundTint="#83D687"
+        android:contentDescription="Scanbutton"
+        android:text="scan"
+        android:textColor="@color/black"
+        app:icon="@android:drawable/ic_menu_camera"
+        app:iconPadding="10dp"
+        app:layout_constrainedHeight="true"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"
+        tools:visibility="visible" />
+
+    <ImageButton
+        android:id="@+id/btnMenuClimate2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="7dp"
+        android:layout_marginEnd="321dp"
+        android:layout_marginBottom="598dp"
+        android:backgroundTint="#7FB381"
+        android:contentDescription="menubar"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@android:drawable/ic_menu_more" />
+
+    <ImageButton
+        android:id="@+id/btnFunfacts1"
+        style="@android:style/Widget.Holo.Light.ImageButton"
+        android:layout_width="64dp"
+        android:layout_height="56dp"
+        android:layout_marginStart="292dp"
+        android:layout_marginTop="600dp"
+        android:layout_marginEnd="47dp"
+        android:layout_marginBottom="40dp"
+        android:contentDescription="funfactsbutton"
+        android:scaleType="centerCrop"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.311"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.9"
+        app:srcCompat="@drawable/book_fill" />
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/barmenubar6"
+        android:layout_width="395dp"
+        android:layout_height="67dp"
+        android:layout_marginStart="7dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="590dp"
+        android:background="#CAEDCB"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        android:visibility="visible"
+        app:layout_anchorGravity="top|center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/landingpage"
+        android:layout_width="173dp"
+        android:layout_height="172dp"
+        android:layout_marginStart="118dp"
+        android:layout_marginTop="143dp"
+        android:layout_marginEnd="102dp"
+        android:layout_marginBottom="342dp"
+        android:background="#00D66161"
+        android:backgroundTint="#E2E6DD"
+        android:clipToPadding="true"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.346" />
+    <ImageView
+        android:id="@+id/minus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_baseline_remove"
+        tools:ignore="MissingConstraints" />
+
+    <ImageView
+        android:id="@+id/plus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_baseline_add"
+        tools:ignore="MissingConstraints" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+

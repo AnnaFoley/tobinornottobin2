@@ -30,8 +30,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static Metadata.Preconditions.checkArgument;
-import static Metadata.Preconditions.checkNotNull;
+import static com.example.tobinornottobin2.Metadata.Preconditions.checkArgument;
+import static com.example.tobinornottobin2.Metadata.Preconditions.checkNotNull;
 
 /** Extracts model information out of TFLite model FLatBuffer. */
 final class ModelInfo {

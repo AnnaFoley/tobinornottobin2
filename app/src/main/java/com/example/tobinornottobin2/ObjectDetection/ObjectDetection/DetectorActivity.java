@@ -30,14 +30,14 @@ import android.util.Size;
 import android.util.TypedValue;
 import android.widget.Toast;
 
-import com.example.tobinornottobin.R;
+import com.example.tobinornottobin2.R;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import ObjectDetection.OverlayView.DrawCallback;
-import lib_task_api.src.main.java.org.tensorflow.lite.examples.detection.tflite.TFLiteObjectDetectionAPIModel;
+import com.example.tobinornottobin2.ObjectDetection.ObjectDetection.OverlayView.DrawCallback;
+import com.example.tobinornottobin2.lib_task_api.src.main.java.org.tensorflow.lite.examples.detection.tflite.TFLiteObjectDetectionAPIModel;
 
 
 /**
@@ -93,8 +93,7 @@ public abstract class DetectorActivity extends CameraActivity implements OnImage
         int cropSize = TF_OD_API_INPUT_SIZE;
 
         try {
-            detector =
-                    TFLiteObjectDetectionAPIModel.create(
+            detector = (Detector) TFLiteObjectDetectionAPIModel.create(
                             this,
                             TF_OD_API_MODEL_FILE,
                             TF_OD_API_LABELS_FILE,
@@ -178,7 +177,7 @@ public abstract class DetectorActivity extends CameraActivity implements OnImage
                     public void run() {
                         LOGGER.i("Running detection on image " + currTimestamp);
                         final long startTime = SystemClock.uptimeMillis();
-                        final ArrayList<Detector.Recognition> results = detector.recognizeImage(croppedBitmap);
+                        final ArrayList<Detector.Recognition> results = (ArrayList<Detector.Recognition>) detector.recognizeImage(croppedBitmap);
                         lastProcessingTimeMs = SystemClock.uptimeMillis() - startTime;
 
                         cropCopyBitmap = Bitmap.createBitmap(croppedBitmap);

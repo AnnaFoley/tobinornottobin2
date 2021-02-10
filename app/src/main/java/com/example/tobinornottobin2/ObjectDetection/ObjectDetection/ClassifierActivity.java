@@ -6,12 +6,12 @@ import android.os.SystemClock;
 import android.util.Size;
 import android.util.TypedValue;
 
-import com.example.tobinornottobin.R;
+import com.example.tobinornottobin2.R;
 
 import java.io.IOException;
 import java.util.List;
 
-import ObjectDetection.Classifier.Device;
+import com.example.tobinornottobin2.ObjectDetection.ObjectDetection.Classifier.Device;
 
 
 public abstract class ClassifierActivity<onImageAvailableListener> extends CameraActivity {
