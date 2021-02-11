@@ -1,4 +1,5 @@
 
+
 /* Copyright 2020 The TensorFlow Authors. All Rights Reserved.
         *
         * Licensed under the Apache License, Version 2.0 (the "License");
@@ -41,7 +42,8 @@ import java.util.Scanner;
 
 import com.example.tobinornottobin2.ObjectDetection.ObjectDetection.Detector.Recognition;
 import com.example.tobinornottobin2.lib_task_api.src.main.java.org.tensorflow.lite.examples.detection.tflite.TFLiteObjectDetectionAPIModel;
-
+//import com.example.tobinornottobin2.ObjectDetection.ObjectDetection.InstrumentationRegistry.*;
+//import com.example.tobinornottobin2.lib_interpreter.src.main.java.org.tensorflow.lite.examples.detection.tflite.TFLiteObjectDetectionAPIModel;
 import static java.lang.Math.abs;
 import static java.lang.Math.max;
 import static java.lang.Math.min;
@@ -59,7 +61,7 @@ public class ScanService { //occurs whwn the scan button is cliked on the scan p
     private static final String LABELS_FILE = "labelmap.txt"; //Lables for images is stored
     private static final Size IMAGE_SIZE = new Size(640, 480);  // used to calcuaate the height of the image scanned
 
-    private Detector detector;
+    private com.example.tobinornottobin2.lib_task_api.src.main.java.org.tensorflow.lite.examples.detection.tflite.Detector detector;
     private Bitmap croppedBitmap;
     private Matrix frameToCropTransform;
     private Matrix cropToFrameTransform;
@@ -68,7 +70,7 @@ public class ScanService { //occurs whwn the scan button is cliked on the scan p
     public void setUp() throws IOException { // method to begin the detection of the object you need to set up
         detector =
                 TFLiteObjectDetectionAPIModel.create(   //calling the detection API and creating a a variable for each of the following to store the information gathered from the scan/images
-                        InstrumentationRegistry.getInstrumentation().getContext(),
+                        InstrumentationRegistry.getInstrumentation().getApplicationContext(),
                         MODEL_FILE,
                         LABELS_FILE,
                         MODEL_INPUT_SIZE,
@@ -95,13 +97,13 @@ public class ScanService { //occurs whwn the scan button is cliked on the scan p
     public void detectionResultsShouldNotChange() throws Exception {
         Canvas canvas = new Canvas(croppedBitmap);
         canvas.drawBitmap(loadImage("table.jpg"), frameToCropTransform, null);
-        final List<Recognition> results = detector.recognizeImage(croppedBitmap);
+        final ArrayList<com.example.tobinornottobin2.lib_task_api.src.main.java.org.tensorflow.lite.examples.detection.tflite.Detector.Recognition> results = detector.recognizeImage(croppedBitmap);
         final List<Recognition> expected = loadRecognitions("table_results.txt");
 
         for (Recognition target : expected) {
             // Find a matching result in results
             boolean matched = false;
-            for (Recognition item : results) {
+            for (com.example.tobinornottobin2.lib_task_api.src.main.java.org.tensorflow.lite.examples.detection.tflite.Detector.Recognition item : results) {
                 RectF bbox = new RectF();
                 cropToFrameTransform.mapRect(bbox, item.getLocation());
                 if (item.getTitle().equals(target.getTitle())
@@ -135,7 +137,7 @@ public class ScanService { //occurs whwn the scan button is cliked on the scan p
 
     private static Bitmap loadImage(String fileName) throws Exception {
         AssetManager assetManager =
-                InstrumentationRegistry.getInstrumentation().getContext().getAssets();
+                InstrumentationRegistry.getInstrumentation().getApplicationContext().getAssets();
         InputStream inputStream = assetManager.open(fileName);
         return BitmapFactory.decodeStream(inputStream);
     }
@@ -149,7 +151,7 @@ public class ScanService { //occurs whwn the scan button is cliked on the scan p
     // ...
     private static List<Recognition> loadRecognitions(String fileName) throws Exception {
         AssetManager assetManager =
-                InstrumentationRegistry.getInstrumentation().getContext().getAssets();
+                InstrumentationRegistry.getInstrumentation().getApplicationContext().getAssets();
         InputStream inputStream = assetManager.open(fileName);
         Scanner scanner = new Scanner(inputStream);
         List<Recognition> result = new ArrayList<>();
