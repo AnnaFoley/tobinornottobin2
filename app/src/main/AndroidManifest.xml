@@ -2,9 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.tobinornottobin2">
-    <uses-sdk tools:ignore="WrongManifestParent" />
 
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-feature android:name="android.hardware.camera" />
 
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
@@ -16,20 +16,27 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Tobinornottobin2">
-        <activity android:name="com.example.tobinornottobin2.ObjectDetection.ObjectDetection.CameraActivity"/>
+        <activity android:name="com.example.tobinornottobin2.ObjectDetection.ObjectDetection.CameraActivity">
+        </activity>
         <activity
             android:name="com.example.tobinornottobin2.ObjectDetection.ObjectDetection.DetectorActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait">
-            <intent-filter>
-
-                <category android:name="android.intent.category.LAUNCHER" />
+        <intent-filter>
+          <!--  <action android:name="android.intent.action.MAIN"-->
+                <category android:name="android.intent.category.LAUNCHER"></category>
             </intent-filter>
         </activity>
 
-        <activity android:name="com.example.tobinornottobin2.FunFacts" />
+        <activity android:name=".FunFacts" />
         <activity android:name=".ClimateChange" />
-
+        <activity android:name=".Results" />
+        <activity android:name=".ScanItem">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <service
             android:name=".UserService"
             android:enabled="true"
@@ -38,19 +45,12 @@
             android:name=".FactsService"
             android:enabled="true"
             android:exported="true" />
-        <service
-            android:name="com.example.tobinornottobin2.ObjectDetection.ObjectDetection.ScanService"
+        <activity
+            android:name="com.example.tobinornottobin2.ObjectDetection.ObjectDetection.ScanActivity"
             android:enabled="true"
             android:exported="true"
             tools:ignore="Instantiatable" />
 
-        <activity android:name=".Results" />
-        <activity android:name=".ScanItem">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
     </application>
 
 </manifest>

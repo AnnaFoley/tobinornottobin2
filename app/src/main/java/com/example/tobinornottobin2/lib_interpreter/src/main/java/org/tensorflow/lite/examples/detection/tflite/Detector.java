@@ -18,11 +18,11 @@ package com.example.tobinornottobin2.lib_interpreter.src.main.java.org.tensorflo
 import android.graphics.Bitmap;
 import android.graphics.RectF;
 
-import java.util.List;
+import java.util.ArrayList;
 
 /** Generic interface for interacting with different recognition engines. */
 public interface Detector {
-  List<com.example.tobinornottobin2.ObjectDetection.ObjectDetection.Detector.Recognition> recognizeImage(Bitmap bitmap);
+  ArrayList<Recognition> recognizeImage(Bitmap bitmap);
 
   void enableStatLogging(final boolean debug);
 

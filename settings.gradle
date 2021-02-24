@@ -1,2 +1,2 @@
-include ':app', ':lib_interpreter', 'lib_task_api'
+include ':app',  ':com.example.tobinornottobin2.lib_task_api', ':com.example.tobinornottobin2.lib_interpreter'
 rootProject.name = "tobinornottobin2"

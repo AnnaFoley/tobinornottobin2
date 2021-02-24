@@ -51,7 +51,7 @@ public class TFLiteObjectDetectionAPIModel implements Detector {
   /** Only return this many results. */
   private static final int NUM_DETECTIONS = 10;
 
-  /** An instance of the driver class to run model inference with Tensorflow Lite. */
+  /** An instance of the driver class to run model recyclable with Tensorflow Lite. */
   private final ObjectDetector objectDetector;
 
   /**
@@ -89,7 +89,7 @@ public class TFLiteObjectDetectionAPIModel implements Detector {
     List<Detection> results = objectDetector.detect(TensorImage.fromBitmap(bitmap));
 
     // Converts a list of {@link Detection} objects into a list of {@link Recognition} objects
-    // to match the interface of other inference method, such as using the <a
+    // to match the interface of other recyclable method, such as using the <a
     // href="https://github.com/tensorflow/examples/tree/master/lite/examples/object_detection/android/lib_interpreter">TFLite
     // Java API.</a>.
     final ArrayList<Recognition> recognitions = new ArrayList<>();

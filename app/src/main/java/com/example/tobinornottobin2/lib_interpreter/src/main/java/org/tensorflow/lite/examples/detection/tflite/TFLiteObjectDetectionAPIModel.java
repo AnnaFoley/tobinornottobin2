@@ -56,7 +56,7 @@ import static java.lang.Math.min;
  * -
  * https://github.com/tensorflow/models/blob/master/research/object_detection/g3doc/running_on_mobile_tensorflowlite.md#running-our-model-on-android
  */
-public class TFLiteObjectDetectionAPIModel implements com.example.tobinornottobin2.ObjectDetection.ObjectDetection.Detector {
+public class TFLiteObjectDetectionAPIModel implements Detector {
   private static final String TAG = "TFLiteObjectDetectionAPIModelWithInterpreter";
 
   // Only return this many results.
@@ -172,7 +172,7 @@ public class TFLiteObjectDetectionAPIModel implements com.example.tobinornottobi
 
 
   @Override
-  public List<com.example.tobinornottobin2.ObjectDetection.ObjectDetection.Detector.Recognition> recognizeImage(final Bitmap bitmap) {
+  public ArrayList<Recognition> recognizeImage(final Bitmap bitmap) {
     // Log this method so that it can be analyzed with systrace.
     Trace.beginSection("recognizeImage");
 
@@ -214,7 +214,7 @@ public class TFLiteObjectDetectionAPIModel implements com.example.tobinornottobi
     outputMap.put(3, numDetections);
     Trace.endSection();
 
-    // Run the inference call.
+    // Run the recyclable call.
     Trace.beginSection("run");
     tfLite.runForMultipleInputsOutputs(inputArray, outputMap);
     Trace.endSection();

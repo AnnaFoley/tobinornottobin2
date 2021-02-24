@@ -39,6 +39,7 @@ final class ModelMetadataInfo {
     /** The minimum parser version required to fully understand the metadata flatbuffer. */
     private final String /* @Nullable */ minVersion;
 
+
     /**
      * Creates a {@link ModelMetadataInfo} with the metadata FlatBuffer, {@code buffer}.
      *

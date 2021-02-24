@@ -25,27 +25,39 @@ import android.graphics.Paint.Style;
 import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.media.ImageReader.OnImageAvailableListener;
+import android.os.Bundle;
 import android.os.SystemClock;
 import android.util.Size;
 import android.util.TypedValue;
 import android.widget.Toast;
 
 import com.example.tobinornottobin2.R;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import com.example.tobinornottobin2.ObjectDetection.ObjectDetection.OverlayView.DrawCallback;
-import com.example.tobinornottobin2.lib_task_api.src.main.java.org.tensorflow.lite.examples.detection.tflite.TFLiteObjectDetectionAPIModel;
+import com.example.tobinornottobin2.lib_interpreter.src.main.java.org.tensorflow.lite.examples.detection.tflite.TFLiteObjectDetectionAPIModel;
 
 
 /**
  * An activity that uses a TensorFlowMultiBoxDetector and ObjectTracker to detect and then track
  * objects.
  */
-public abstract class DetectorActivity extends CameraActivity implements OnImageAvailableListener {
+public  class DetectorActivity extends CameraActivity implements OnImageAvailableListener {
     private static final Logger LOGGER = new Logger();
+
+    FirebaseFirestore db;
 
     // Configuration values for the prepackaged SSD model.
     private static final int TF_OD_API_INPUT_SIZE = 300;
@@ -80,8 +92,11 @@ public abstract class DetectorActivity extends CameraActivity implements OnImage
 
     private BorderedText borderedText;
 
+    FirebaseFirestore recycable = FirebaseFirestore.getInstance();
+
     @Override
     public void onPreviewSizeChosen(final Size size, final int rotation) {
+
         final float textSizePx =
                 TypedValue.applyDimension(
                         TypedValue.COMPLEX_UNIT_DIP, TEXT_SIZE_DIP, getResources().getDisplayMetrics());
@@ -142,9 +157,11 @@ public abstract class DetectorActivity extends CameraActivity implements OnImage
                 });
 
         tracker.setFrameConfiguration(previewWidth, previewHeight, sensorOrientation);
+
+
     }
 
-    public abstract boolean isDebug();
+
 
     @Override
     protected void processImage() {
@@ -195,7 +212,7 @@ public abstract class DetectorActivity extends CameraActivity implements OnImage
                         }
 
                         final List<Detector.Recognition> mappedRecognitions =
-                                new ArrayList<>();
+                                new ArrayList<Detector.Recognition>();
 
                         for (final Detector.Recognition result : results) {
                             final RectF location = result.getLocation();
@@ -210,6 +227,7 @@ public abstract class DetectorActivity extends CameraActivity implements OnImage
                             }
                         }
 
+
                         try {
                             tracker.trackResults(mappedRecognitions, currTimestamp);
                         } catch (Exception e) {
@@ -223,8 +241,8 @@ public abstract class DetectorActivity extends CameraActivity implements OnImage
                                 new Runnable() {
                                     @Override
                                     public void run() {
-                                        showFrameInfo(previewWidth + "x" + previewHeight);
-                                        showCropInfo(cropCopyBitmap.getWidth() + "x" + cropCopyBitmap.getHeight());
+                                        shownameInfo(previewWidth + "x" + previewHeight);
+                                        showMaterialInfo(cropCopyBitmap.getWidth() + "x" + cropCopyBitmap.getHeight());
                                         showInference(lastProcessingTimeMs + "ms");
                                     }
                                 });
@@ -264,13 +282,13 @@ public abstract class DetectorActivity extends CameraActivity implements OnImage
                 });
     }
 
-    @Override
-    protected void setNumThreads(final int numThreads) {
+    public  void setNumThreads(final int numThreads) {
         runInBackground(
                 () -> {
                     try {
-                        detector.setNumThreads(numThreads);
+                        setNumThreads(numThreads);
                     } catch (IllegalArgumentException e) {
+
                         LOGGER.e(e, "Failed to set multithreads.");
                         runOnUiThread(
                                 () -> {
@@ -280,5 +298,15 @@ public abstract class DetectorActivity extends CameraActivity implements OnImage
                 });
     }
 
+public void checkItemname (){
+    DocumentReference Itemname = db.collection("recyclable").document("name");
+
+
+    if ( TF_OD_API_LABELS_FILE.contains("Itemname")){
+        ReadItemDetails();
+
+    }
 }
+}
+
 

@@ -80,7 +80,7 @@ public abstract class Classifier {
     public final int imageSizeY;
 
 
-    /** An instance of the driver class to run model inference with Tensorflow Lite. */
+    /** An instance of the driver class to run model recyclable with Tensorflow Lite. */
     // TODO: Declare a TFLite interpreter
     protected Interpreter tflite;
 
@@ -220,7 +220,7 @@ public abstract class Classifier {
         LOGGER.d("Created a Tensorflow Lite Image Classifier.");
     }
 
-    /** Runs inference and returns the classification results. */
+    /** Runs recyclable and returns the classification results. */
     public List<Recognition> recognizeImage(final Bitmap bitmap, int sensorOrientation) {
         // Logs this method so that it can be analyzed with systrace.
         Trace.beginSection("recognizeImage");
@@ -232,14 +232,14 @@ public abstract class Classifier {
         Trace.endSection();
         LOGGER.v("Timecost to load the image: " + (endTimeForLoadImage - startTimeForLoadImage));
 
-        // Runs the inference call.
+        // Runs the recyclable call.
         Trace.beginSection("runInference");
         long startTimeForReference = SystemClock.uptimeMillis();
-        // TODO: Run TFLite inference
+        // TODO: Run TFLite recyclable
         tflite.run(inputImageBuffer.getBuffer(), outputProbabilityBuffer.getBuffer().rewind());
         long endTimeForReference = SystemClock.uptimeMillis();
         Trace.endSection();
-        LOGGER.v("Timecost to run model inference: " + (endTimeForReference - startTimeForReference));
+        LOGGER.v("Timecost to run model recyclable: " + (endTimeForReference - startTimeForReference));
 
         // Gets the map of label and probability.
         // TODO: Use TensorLabel from TFLite Support Library to associate the probabilities

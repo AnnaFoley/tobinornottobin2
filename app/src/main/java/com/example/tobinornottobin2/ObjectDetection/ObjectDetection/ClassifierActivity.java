@@ -94,8 +94,8 @@ public abstract class ClassifierActivity<onImageAvailableListener> extends Camer
                                         @Override
                                         public void run() {
                                             showResultsInBottomSheet(results);
-                                            showFrameInfo(previewWidth + "x" + previewHeight);
-                                            showCropInfo(imageSizeX + "x" + imageSizeY);
+                                            shownameInfo(previewWidth + "x" + previewHeight);
+                                            showMaterialInfo(imageSizeX + "x" + imageSizeY);
                                             showCameraResoxlution(cropSize + "x" + cropSize);
                                             showRotationInfo(String.valueOf(sensorOrientation));
                                             showInference(lastProcessingTimeMs + "ms");

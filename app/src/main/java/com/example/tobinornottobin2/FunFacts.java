@@ -9,7 +9,7 @@ import android.widget.ImageButton;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class FunFacts extends AppCompatActivity {
+public  class FunFacts extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

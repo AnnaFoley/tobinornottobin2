@@ -46,7 +46,7 @@ import java.util.List;
  *   <li>Input image tensor ({@code kTfLiteUInt8}/{@code kTfLiteFloat32})
  *       <ul>
  *         <li>image input of size {@code [batch x height x width x channels]}.
- *         <li>batch inference is not supported ({@code batch} is required to be 1).
+ *         <li>batch recyclable is not supported ({@code batch} is required to be 1).
  *         <li>only RGB inputs are supported ({@code channels} is required to be 3).
  *         <li>if type is {@code kTfLiteFloat32}, NormalizationOptions are required to be attached
  *             to the metadata for input normalization.
@@ -329,7 +329,7 @@ public final  class ObjectDetector extends BaseTaskApi{
 
             /**
              * Sets the number of threads to be used for TFLite ops that support multi-threading when
-             * running inference with CPU. Defaults to -1.
+             * running recyclable with CPU. Defaults to -1.
              *
              * <p>numThreads should be greater than 0 or equal to -1. Setting numThreads to -1 has the
              * effect to let TFLite runtime set the value.

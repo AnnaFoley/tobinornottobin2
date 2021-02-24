@@ -41,7 +41,7 @@ baseball glove
 skateboard
 surfboard
 tennis racket
-bottle
+glass bottle
 ???
 wine glass
 cup
@@ -88,3 +88,38 @@ scissors
 teddy bear
 hair drier
 toothbrush
+plastic bottle
+pringles can
+crisps packet
+newspaper
+magazine
+letter
+cardboard box
+pizza box
+soup container 
+milk container 
+card
+refill pad
+food can 
+sanddwich wrappings
+lunch box
+plastic bag
+takwaway coffe cup
+egg box
+pen
+glass bottle 
+notebook
+yougurt pot
+chocolate bar wrappers
+frozen veg bag
+fruit wrapping/containers
+wet wipes
+household cleaning products  
+paper towels
+tissue
+paper plates 
+
+
+
+
+

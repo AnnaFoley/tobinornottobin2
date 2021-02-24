@@ -26,8 +26,13 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.RectF;
+import android.media.ImageReader;
+import android.os.Bundle;
 import android.util.Size;
 
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.tobinornottobin2.R;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.junit.Before;
@@ -41,9 +46,9 @@ import java.util.List;
 import java.util.Scanner;
 
 import com.example.tobinornottobin2.ObjectDetection.ObjectDetection.Detector.Recognition;
-import com.example.tobinornottobin2.lib_task_api.src.main.java.org.tensorflow.lite.examples.detection.tflite.TFLiteObjectDetectionAPIModel;
+//import com.example.tobinornottobin2.lib_task_api.src.main.java.org.tensorflow.lite.examples.detection.tflite.TFLiteObjectDetectionAPIModel;
 //import com.example.tobinornottobin2.ObjectDetection.ObjectDetection.InstrumentationRegistry.*;
-//import com.example.tobinornottobin2.lib_interpreter.src.main.java.org.tensorflow.lite.examples.detection.tflite.TFLiteObjectDetectionAPIModel;
+import com.example.tobinornottobin2.lib_interpreter.src.main.java.org.tensorflow.lite.examples.detection.tflite.TFLiteObjectDetectionAPIModel;
 import static java.lang.Math.abs;
 import static java.lang.Math.max;
 import static java.lang.Math.min;
@@ -53,8 +58,9 @@ import static org.junit.Assert.assertTrue;
 
 /** Golden test for Object Detection Reference app. */
 @RunWith(AndroidJUnit4.class)
-public class ScanService { //occurs whwn the scan button is cliked on the scan page
-    FirebaseFirestore db = FirebaseFirestore.getInstance();
+public  class ScanActivity extends AppCompatActivity  { //occurs whwn the scan button is cliked on the scan page
+
+    FirebaseFirestore recycable = FirebaseFirestore.getInstance();
     private static final int MODEL_INPUT_SIZE = 300;
     private static final boolean IS_MODEL_QUANTIZED = true;
     private static final String MODEL_FILE = "ssd_mibilenet_v1_1_metadata_1.tflite"; //file that hold the metadata downloaded from Tensorflow
@@ -69,7 +75,7 @@ public class ScanService { //occurs whwn the scan button is cliked on the scan p
     @Before
     public void setUp() throws IOException { // method to begin the detection of the object you need to set up
         detector =
-                TFLiteObjectDetectionAPIModel.create(   //calling the detection API and creating a a variable for each of the following to store the information gathered from the scan/images
+                (com.example.tobinornottobin2.lib_task_api.src.main.java.org.tensorflow.lite.examples.detection.tflite.Detector) TFLiteObjectDetectionAPIModel.create(   //calling the detection API and creating a a variable for each of the following to store the information gathered from the scan/images
                         InstrumentationRegistry.getInstrumentation().getApplicationContext(),
                         MODEL_FILE,
                         LABELS_FILE,
@@ -89,8 +95,6 @@ public class ScanService { //occurs whwn the scan button is cliked on the scan p
         cropToFrameTransform = new Matrix();
         frameToCropTransform.invert(cropToFrameTransform);
     }
-
-
 
 
     @Test // test to see if the scan can recongise the object from the images provided.
@@ -172,4 +176,10 @@ public class ScanService { //occurs whwn the scan button is cliked on the scan p
         }
         return result; // result is the condidence score of the scan, this is the % of accuaracy
     }
+
+//    @Override
+//    protected void onCreate(Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//        setContentView(R.layout.tfe_od_activity_camera);
+//   }
 }

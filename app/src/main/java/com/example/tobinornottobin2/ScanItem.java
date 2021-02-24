@@ -1,19 +1,22 @@
 package com.example.tobinornottobin2;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
 
-import com.example.tobinornottobin2.ObjectDetection.ObjectDetection.ScanService;
+import com.example.tobinornottobin2.ObjectDetection.ObjectDetection.CameraActivity;
+import com.example.tobinornottobin2.ObjectDetection.ObjectDetection.Detector;
+import com.example.tobinornottobin2.ObjectDetection.ObjectDetection.DetectorActivity;
+import com.example.tobinornottobin2.ObjectDetection.ObjectDetection.ScanActivity;
 
 
-public class ScanItem extends AppCompatActivity {
+public  class ScanItem extends AppCompatActivity {
     private static final String TAG = "MainActivity";
 
     @Override
@@ -42,15 +45,7 @@ public class ScanItem extends AppCompatActivity {
             //}
         //});
 
-// when the user presses the scan button the object detection starts by inisting the scan service
-        @SuppressLint("WrongViewCast") ImageButton btnScan = (ImageButton) findViewById(R.id.btnScan);
-        btnScan.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent StartScan = new Intent(com.example.tobinornottobin2.ScanItem.this, ScanService.class);
-                startActivity(StartScan);
-            }
-        });
+
         //variables
         long id;
         ArrayList<String> material = new ArrayList<>(3);
@@ -60,6 +55,15 @@ public class ScanItem extends AppCompatActivity {
         material.add("can");
 
         boolean clean;
+        // when the user presses the scan button the object detection starts by inisting the scan service
+        Button btnScan = (Button) findViewById(R.id.btnScan);
+        btnScan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent StartScan = new Intent(com.example.tobinornottobin2.ScanItem.this, com.example.tobinornottobin2.ObjectDetection.ObjectDetection.DetectorActivity.class);
+                startActivity(StartScan);
+            }
+        });
 
       ImageButton btnClimate = (ImageButton) findViewById(R.id.btnClimateChange);
         btnClimate.setOnClickListener(new View.OnClickListener() {

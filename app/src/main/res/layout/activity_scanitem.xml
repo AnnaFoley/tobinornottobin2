@@ -12,7 +12,7 @@
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="ObjectDetection.CameraActivity.CameraActivity" />
+        tools:context="com.example.tobinornottobin2.ObjectDetection.ObjectDetection.CameraActivity" />
 
     <SearchView
         android:id="@+id/BarSearch"
@@ -112,6 +112,7 @@
         android:backgroundTint="#83D687"
         android:contentDescription="Scanbutton"
         android:text="scan"
+        android:visibility="visible"
         android:textColor="@color/black"
         app:icon="@android:drawable/ic_menu_camera"
         app:iconPadding="10dp"
@@ -123,7 +124,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0"
-        tools:visibility="visible" />
+        tools:visibility="visible"
+        tools:context="com.example.tobinornotobin2.ObjectDetection.ObjectDetection.ScanActivity"/>
 
     <ImageButton
         android:id="@+id/btnMenuClimate2"
@@ -214,6 +216,7 @@
         android:layout_height="wrap_content"
         android:src="@drawable/ic_baseline_add"
         tools:ignore="MissingConstraints" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

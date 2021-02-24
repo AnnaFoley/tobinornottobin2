@@ -18,6 +18,7 @@
 
 package com.example.tobinornottobin2.ObjectDetection.ObjectDetection;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -26,6 +27,7 @@ import android.app.DialogFragment;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.ImageFormat;
 import android.graphics.Matrix;
@@ -42,6 +44,7 @@ import android.hardware.camera2.TotalCaptureResult;
 import android.hardware.camera2.params.StreamConfigurationMap;
 import android.media.ImageReader;
 import android.media.ImageReader.OnImageAvailableListener;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
@@ -55,6 +58,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
+import androidx.core.app.ActivityCompat;
+
 import com.example.tobinornottobin2.R;
 
 import java.util.ArrayList;
@@ -64,6 +70,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
+
 import com.example.tobinornottobin2.ObjectDetection.ObjectDetection.AutoFitTextureView;
 import com.example.tobinornottobin2.ObjectDetection.ObjectDetection.Logger;
 import com.example.tobinornottobin2.R.id;
@@ -331,11 +338,12 @@ public class CameraConnectionFragment extends Fragment {
 
     @Override
     public View onCreateView(
-            final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
-        return inflater.inflate(layout, container, false);
+            final LayoutInflater inflater, final ViewGroup Cameraimageview, final Bundle savedInstanceState) {
+        return inflater.inflate(layout, Cameraimageview, false);
     }
+
     @Override
-    public void onViewCreated( final View view, final Bundle savedInstanceState) {
+    public void onViewCreated(final View view, final Bundle savedInstanceState) {
         textureView = (AutoFitTextureView) view.findViewById(R.id.texture);
     }
 
@@ -345,6 +353,7 @@ public class CameraConnectionFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onResume() {
         super.onResume();
@@ -414,6 +423,7 @@ public class CameraConnectionFragment extends Fragment {
     }
 
     /** Opens the camera specified by {@link CameraConnectionFragment#cameraId}. */
+    @RequiresApi(api = Build.VERSION_CODES.M)
     private void openCamera(final int width, final int height) {
         setUpCameraOutputs();
         configureTransform(width, height);
@@ -422,6 +432,16 @@ public class CameraConnectionFragment extends Fragment {
         try {
             if (!cameraOpenCloseLock.tryAcquire(2500, TimeUnit.MILLISECONDS)) {
                 throw new RuntimeException("Time out waiting to lock camera opening.");
+            }
+            if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                // TODO: Consider calling
+                //    ActivityCompat#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for ActivityCompat#requestPermissions for more details.
+                return;
             }
             manager.openCamera(cameraId, stateCallback, backgroundHandler);
         } catch (final CameraAccessException e) {

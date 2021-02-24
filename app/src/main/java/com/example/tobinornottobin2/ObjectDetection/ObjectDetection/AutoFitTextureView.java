@@ -15,6 +15,7 @@
  */
 package com.example.tobinornottobin2.ObjectDetection.ObjectDetection;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Matrix;
 import android.graphics.SurfaceTexture;
@@ -58,10 +59,8 @@ public class  AutoFitTextureView  extends TextureView{
     }
 
 
-
-
-    public void onMeasure(final int widthMeasureSpec, final int heightMeasureSpec) {
-        measure(widthMeasureSpec, heightMeasureSpec);
+    protected void onMeasure(final int widthMeasureSpec, final int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         final int width = View.MeasureSpec.getSize(widthMeasureSpec);
         final int height = View.MeasureSpec.getSize(heightMeasureSpec);
         if (0 == ratioWidth || 0 == ratioHeight) {

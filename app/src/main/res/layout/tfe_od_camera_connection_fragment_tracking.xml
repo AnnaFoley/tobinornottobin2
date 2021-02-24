@@ -22,14 +22,15 @@
 
     <com.example.tobinornottobin2.ObjectDetection.ObjectDetection.AutoFitTextureView
         android:id="@+id/texture"
-        android:visibility="visible"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+    <!-- android:visibility="visible"-->
 
     <com.example.tobinornottobin2.ObjectDetection.ObjectDetection.OverlayView
         android:id="@+id/tracking_overlay"
         android:layout_width="match_parent"
-        android:layout_height="642dp"
-        android:visibility="visible" />
+        android:layout_height="642dp"/>
+       <!-- android:visibility="visible"-->
+
 
 </FrameLayout>

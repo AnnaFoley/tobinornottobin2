@@ -8,7 +8,9 @@ import android.widget.ImageButton;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class Results extends AppCompatActivity {
+import com.example.tobinornottobin2.ObjectDetection.ObjectDetection.Detector;
+
+public abstract class Results extends AppCompatActivity  {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

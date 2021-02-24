@@ -56,7 +56,7 @@ import static java.lang.Math.min;
  * -
  * https://github.com/tensorflow/models/blob/master/research/object_detection/g3doc/running_on_mobile_tensorflowlite.md#running-our-model-on-android
  */
-public class TFLiteObjectDetectionAPIModel implements com.example.tobinornottobin2.ObjectDetection.ObjectDetection.Detector {
+public class TFLiteObjectDetectionAPIModel implements Detector {
   private static final String TAG = "TFLiteObjectDetectionAPIModelWithInterpreter";
 
   // Only return this many results.
@@ -115,6 +115,7 @@ public class TFLiteObjectDetectionAPIModel implements com.example.tobinornottobi
    * @param inputSize     The size of image input
    * @param isQuantized   Boolean representing model is quantized or not
    */
+
   @SuppressLint("LongLogTag")
   public static Detector create(
           final Context context,
@@ -214,7 +215,7 @@ public class TFLiteObjectDetectionAPIModel implements com.example.tobinornottobi
     outputMap.put(3, numDetections);
     Trace.endSection();
 
-    // Run the inference call.
+    // Run the recyclable call.
     Trace.beginSection("run");
     tfLite.runForMultipleInputsOutputs(inputArray, outputMap);
     Trace.endSection();
