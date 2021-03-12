@@ -1,33 +1,34 @@
 {
   "project_info": {
-    "project_number": "731797278177",
-    "project_id": "tobinorbottobin",
-    "storage_bucket": "tobinorbottobin.appspot.com"
+    "project_number": "762612916320",
+    "firebase_url": "https://tobinornottobin-8e230.firebaseio.com",
+    "project_id": "tobinornottobin-8e230",
+    "storage_bucket": "tobinornottobin-8e230.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:731797278177:android:ab7b34dda14cdd68c156a0",
+        "mobilesdk_app_id": "1:762612916320:android:c1ec2e85f960854d19e305",
         "android_client_info": {
-          "package_name": "com.example.tobinornottobin2"
+          "package_name": "com.example.tobinornottobin"
         }
       },
       "oauth_client": [
         {
-          "client_id": "731797278177-mtq58sul6del3gujsomr4t4krhhnppar.apps.googleusercontent.com",
+          "client_id": "762612916320-j6ektmectvqnierggd0upj8dq4giu2nk.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCkf-WT8ee1E7YV7L6StmRkBfXsvaXCzfY"
+          "current_key": "AIzaSyCkUhUPg-JuJKBFI3FlM9GGtADfDA6AUl0"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "731797278177-mtq58sul6del3gujsomr4t4krhhnppar.apps.googleusercontent.com",
+              "client_id": "762612916320-j6ektmectvqnierggd0upj8dq4giu2nk.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

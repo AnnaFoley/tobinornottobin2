@@ -24,9 +24,15 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.app.Fragment;
+//import android.app.Fragment;
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.fragment.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.ImageFormat;
@@ -48,6 +54,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
+import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Size;
 import android.util.SparseIntArray;
@@ -71,13 +78,7 @@ import java.util.List;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
-import com.example.tobinornottobin2.ObjectDetection.ObjectDetection.AutoFitTextureView;
-import com.example.tobinornottobin2.ObjectDetection.ObjectDetection.Logger;
-import com.example.tobinornottobin2.R.id;
-
-import org.junit.Before;
-
-import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
+import static com.example.tobinornottobin2.ObjectDetection.ObjectDetection.CameraActivity.CAMERA_REQUEST_CODE;
 
 /**
  * Camera Connection Fragment that captures images from camera.
@@ -100,19 +101,20 @@ public class CameraConnectionFragment extends Fragment {
      */
     private static final SparseIntArray ORIENTATIONS = new SparseIntArray();
 
+
     private static final String FRAGMENT_DIALOG = "dialog";
 
     static {
-        ORIENTATIONS.append(Surface.ROTATION_0, 90);
-        ORIENTATIONS.append(Surface.ROTATION_90, 0);
-        ORIENTATIONS.append(Surface.ROTATION_180, 270);
-        ORIENTATIONS.append(Surface.ROTATION_270, 180);
+        ORIENTATIONS.append( Surface.ROTATION_0, 90 );
+        ORIENTATIONS.append( Surface.ROTATION_90, 0 );
+        ORIENTATIONS.append( Surface.ROTATION_180, 270 );
+        ORIENTATIONS.append( Surface.ROTATION_270, 180 );
     }
 
     /**
      * A {@link Semaphore} to prevent the app from exiting before closing the camera.
      */
-    private final Semaphore cameraOpenCloseLock = new Semaphore(1);
+    private final Semaphore cameraOpenCloseLock = new Semaphore( 1 );
     /**
      * A {@link OnImageAvailableListener} to receive frames as they are available.
      */
@@ -224,16 +226,17 @@ public class CameraConnectionFragment extends Fragment {
      */
     private final TextureView.SurfaceTextureListener surfaceTextureListener =
             new TextureView.SurfaceTextureListener() {
+                @RequiresApi(api = Build.VERSION_CODES.M)
                 @Override
                 public void onSurfaceTextureAvailable(
                         final SurfaceTexture texture, final int width, final int height) {
-                    openCamera(width, height);
+                    openCamera( width, height );
                 }
 
                 @Override
                 public void onSurfaceTextureSizeChanged(
                         final SurfaceTexture texture, final int width, final int height) {
-                    configureTransform(width, height);
+                    configureTransform( width, height );
                 }
 
                 @Override
@@ -245,20 +248,25 @@ public class CameraConnectionFragment extends Fragment {
                 public void onSurfaceTextureUpdated(final SurfaceTexture texture) {
                 }
             };
-    private Object AutoFitTextureView;
+  //  private Object AutoFitTextureView;
 
-
-    @SuppressLint("ValidFragment")
-    private CameraConnectionFragment(
+    public CameraConnectionFragment(
             final ConnectionCallback connectionCallback,
             final OnImageAvailableListener imageListener,
-            final int layout,
+            final int layoutId,
             final Size inputSize) {
-        this.cameraConnectionCallback = connectionCallback;
+        this.cameraConnectionCallback = (ConnectionCallback) connectionCallback;
         this.imageListener = imageListener;
-        this.layout = layout;
+        this.layout = layoutId;
         this.inputSize = inputSize;
-    }
+}
+
+//    public CameraConnectionFragment(CameraActivity cameraActivity, Size desiredPreviewFrameSize, OnImageAvailableListener imageListener, Size inputSize, int layout, ConnectionCallback cameraConnectionCallback) {
+//        this.imageListener = imageListener;
+//        this.inputSize = inputSize;
+//        this.layout = layout;
+//        this.cameraConnectionCallback = cameraConnectionCallback;
+//    }
 
     /**
      * Given {@code choices} of {@code Size}s supported by a camera, chooses the smallest one whose
@@ -315,7 +323,7 @@ public class CameraConnectionFragment extends Fragment {
             final OnImageAvailableListener imageListener,
             final int layout,
             final Size inputSize) {
-        return new CameraConnectionFragment(callback, imageListener, layout, inputSize);
+        return new CameraConnectionFragment( callback, imageListener, layout, inputSize);
     }
 
     /**
@@ -338,13 +346,13 @@ public class CameraConnectionFragment extends Fragment {
 
     @Override
     public View onCreateView(
-            final LayoutInflater inflater, final ViewGroup Cameraimageview, final Bundle savedInstanceState) {
-        return inflater.inflate(layout, Cameraimageview, false);
+            final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
+        return inflater.inflate(layout, container, false);
     }
 
     @Override
     public void onViewCreated(final View view, final Bundle savedInstanceState) {
-        textureView = (AutoFitTextureView) view.findViewById(R.id.texture);
+        textureView =  (AutoFitTextureView) view.findViewById(R.id.texture);
     }
 
 
@@ -414,8 +422,8 @@ public class CameraConnectionFragment extends Fragment {
         } catch (final NullPointerException e) {
             // Currently an NPE is thrown when the Camera2API is used but not supported on the
             // device this code runs.
-            ErrorDialog.newInstance("")
-                    .show(getChildFragmentManager(), FRAGMENT_DIALOG);
+//            ErrorDialog.newInstance(R.string.tfe_od_camera_error)
+//                    .show(getChildFragmentManager(), FRAGMENT_DIALOG);
             throw new IllegalStateException("");
         }
 
@@ -424,21 +432,21 @@ public class CameraConnectionFragment extends Fragment {
 
     /** Opens the camera specified by {@link CameraConnectionFragment#cameraId}. */
     @RequiresApi(api = Build.VERSION_CODES.M)
-    private void openCamera(final int width, final int height) {
+    public void openCamera(final int width, final int height) {
         setUpCameraOutputs();
-        configureTransform(width, height);
-        final Activity activity = getActivity();
-        final CameraManager manager = (CameraManager) activity.getSystemService(Context.CAMERA_SERVICE);
-        try {
-            if (!cameraOpenCloseLock.tryAcquire(2500, TimeUnit.MILLISECONDS)) {
-                throw new RuntimeException("Time out waiting to lock camera opening.");
+            configureTransform(width, height);
+            final Activity activity = getActivity();
+            final CameraManager manager = (CameraManager) activity.getSystemService(Context.CAMERA_SERVICE);
+            try {
+                if (!cameraOpenCloseLock.tryAcquire(2500, TimeUnit.MILLISECONDS)) {
+                    throw new RuntimeException("Time out waiting to lock camera opening.");
             }
             if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
                 // TODO: Consider calling
                 //    ActivityCompat#requestPermissions
                 // here to request the missing permissions, and then overriding
-                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                //                                          int[] grantResults)
+//               public void onRequestPermissionsResult(int requestCode, String[] permissions,
+//                                                        int[] grantResults)
                 // to handle the case where the user grants the permission. See the documentation
                 // for ActivityCompat#requestPermissions for more details.
                 return;
@@ -449,6 +457,23 @@ public class CameraConnectionFragment extends Fragment {
         } catch (final InterruptedException e) {
             throw new RuntimeException("Interrupted while trying to lock camera opening.", e);
         }
+        ActivityResultLauncher<Intent> someActivityResultLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult result) {
+                        if (result.getResultCode() == Activity.RESULT_OK) {
+                            // There are no request codes
+                            Intent data = result.getData();
+
+                        }
+                    }
+                });
+          //  public void openSomeActivityForResult(); {
+            Intent cameraIntent = new Intent( MediaStore.ACTION_IMAGE_CAPTURE );
+            someActivityResultLauncher.launch( cameraIntent );
+            //startActivityForResult( cameraIntent, CAMERA_REQUEST_CODE );
+
     }
 
     /** Closes the current {@link CameraDevice}. */
@@ -618,10 +643,10 @@ public class CameraConnectionFragment extends Fragment {
     public static class ErrorDialog extends DialogFragment {
         private static final String ARG_MESSAGE = "message";
 
-        public static ErrorDialog newInstance(final String message) {
+        public static ErrorDialog newInstance(final int message) {
             final ErrorDialog dialog = new ErrorDialog();
             final Bundle args = new Bundle();
-            args.putString(ARG_MESSAGE, message);
+            args.putString(ARG_MESSAGE, String.valueOf( message ) );
             dialog.setArguments(args);
             return dialog;
         }

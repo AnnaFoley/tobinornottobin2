@@ -65,28 +65,7 @@ public  class ScanItem extends AppCompatActivity {
             }
         });
 
-      ImageButton btnClimate = (ImageButton) findViewById(R.id.btnClimateChange);
-        btnClimate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-             Intent moveClimatePage = new Intent(com.example.tobinornottobin2.ScanItem.this, ClimateChange.class);
-             startActivity(moveClimatePage);
-            }
-        });
 
 
-        ImageButton btnFacts = (ImageButton) findViewById(R.id.btnFunfacts1);
-        btnFacts.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent moveFactPage = new Intent(com.example.tobinornottobin2.ScanItem.this, FunFacts.class);
-                startActivity(moveFactPage);
-            }
-        });
-
-
-
-
-
-    }
+          }
 }

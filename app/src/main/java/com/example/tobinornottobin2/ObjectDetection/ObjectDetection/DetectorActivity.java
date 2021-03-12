@@ -24,27 +24,23 @@ import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.RectF;
 import android.graphics.Typeface;
+import android.hardware.Camera;
 import android.media.ImageReader.OnImageAvailableListener;
-import android.os.Bundle;
 import android.os.SystemClock;
 import android.util.Size;
 import android.util.TypedValue;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.fragment.app.Fragment;
 
 import com.example.tobinornottobin2.R;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 
 import com.example.tobinornottobin2.ObjectDetection.ObjectDetection.OverlayView.DrawCallback;
 import com.example.tobinornottobin2.lib_interpreter.src.main.java.org.tensorflow.lite.examples.detection.tflite.TFLiteObjectDetectionAPIModel;
@@ -56,6 +52,8 @@ import com.example.tobinornottobin2.lib_interpreter.src.main.java.org.tensorflow
  */
 public  class DetectorActivity extends CameraActivity implements OnImageAvailableListener {
     private static final Logger LOGGER = new Logger();
+    private static final TextView recyclableTextView = null;
+    private static final Size inputSize = null;
 
     FirebaseFirestore db;
 
@@ -93,6 +91,10 @@ public  class DetectorActivity extends CameraActivity implements OnImageAvailabl
     private BorderedText borderedText;
 
     FirebaseFirestore recycable = FirebaseFirestore.getInstance();
+
+    public DetectorActivity() {
+        super( recyclableTextView, inputSize );
+    }
 
     @Override
     public void onPreviewSizeChosen(final Size size, final int rotation) {
@@ -158,12 +160,9 @@ public  class DetectorActivity extends CameraActivity implements OnImageAvailabl
 
         tracker.setFrameConfiguration(previewWidth, previewHeight, sensorOrientation);
 
-
     }
 
-
-
-    @Override
+        @Override
     protected void processImage() {
         ++timestamp;
         final long currTimestamp = timestamp;
@@ -260,6 +259,12 @@ public  class DetectorActivity extends CameraActivity implements OnImageAvailabl
         return DESIRED_PREVIEW_SIZE;
     }
 
+    @Override
+    public void onPreviewFrame(byte[] data, Camera camera) {
+
+
+    }
+
     // Which detection model to use: by default uses Tensorflow Object Detection API frozen
     // checkpoints.
     private enum DetectorMode {
@@ -288,7 +293,6 @@ public  class DetectorActivity extends CameraActivity implements OnImageAvailabl
                     try {
                         setNumThreads(numThreads);
                     } catch (IllegalArgumentException e) {
-
                         LOGGER.e(e, "Failed to set multithreads.");
                         runOnUiThread(
                                 () -> {

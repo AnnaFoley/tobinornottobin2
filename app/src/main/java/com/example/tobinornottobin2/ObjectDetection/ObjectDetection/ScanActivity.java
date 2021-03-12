@@ -26,13 +26,10 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.RectF;
-import android.media.ImageReader;
-import android.os.Bundle;
 import android.util.Size;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.tobinornottobin2.R;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.junit.Before;
@@ -52,7 +49,6 @@ import com.example.tobinornottobin2.lib_interpreter.src.main.java.org.tensorflow
 import static java.lang.Math.abs;
 import static java.lang.Math.max;
 import static java.lang.Math.min;
-import static java.security.AccessController.getContext;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 

@@ -21,42 +21,74 @@
     android:layout_height="match_parent"
     android:background="#00000000">
 
-    <RelativeLayout
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#00D66161"
         android:orientation="vertical">
+        <!--android:background="#00D66161"-->
 
 
-        <FrameLayout
-            android:id="@+id/container"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:context="com.example.tobinornottobin2.ObjectDetection.ObjectDetection.CameraActivity" >
+    <FrameLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/cameraFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="org.tensorflow.demo.CameraActivity" />
 
-            <ImageView
-                android:id="@+id/Cameraimageview"
-                android:layout_width="281dp"
-                android:layout_height="373dp"
-                android:contentDescription="cameraView"
-                android:orientation="vertical"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="50dp"
-                android:layout_marginBottom="60dp"
-                android:paddingTop="50dp"></ImageView>
-        </FrameLayout>
 
         <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:layout_alignParentTop="true"
-            android:background="@color/tfe_semi_transparent">
-            <!--android:fitsSystemWindows="false">-->
+            android:id="@+id/barmenubar6"
+            android:layout_width="400dp"
+            android:layout_height="67dp"
+            android:layout_marginStart="7dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="590dp"
+            android:background="#CAEDCB"
+            android:minHeight="?attr/actionBarSize"
+            android:theme="?attr/actionBarTheme"
+            android:visibility="visible" />
+
+        <SearchView
+            android:id="@+id/BarSearch"
+            android:layout_width="246dp"
+            android:layout_height="22dp"
+            android:layout_marginStart="135dp"
+            android:layout_marginTop="28dp"
+            android:layout_marginEnd="12dp"
+            android:layout_marginBottom="607dp"
+            android:visibility="visible"
+            tools:visibility="visible">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/barmenubar2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="671dp"
+                android:background="#81CA84"
+                android:minHeight="?attr/actionBarSize"
+                android:theme="?attr/actionBarTheme"
+                android:visibility="visible"
+                tools:visibility="visible" />
+        </SearchView>
+
+        <Button
+            android:id="@+id/btnAddObject"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+               android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="102dp"
+        android:layout_marginBottom="342dp"
+            android:backgroundTint="#83D687"
+            android:textColor="@color/black"
+            android:outlineProvider="background"
+            android:text="Add Object "
+            android:visibility="visible"/>
 
 
 
-        </androidx.appcompat.widget.Toolbar>
     </RelativeLayout>
 
     <include

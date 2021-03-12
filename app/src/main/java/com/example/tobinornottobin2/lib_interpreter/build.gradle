@@ -3,12 +3,12 @@ package com.example.tobinornottobin2.lib_interpreter
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 30
-    buildToolsVersion "30.0.2"
+    compileSdkVersion 28
+    buildToolsVersion "28.0.3"
 
     defaultConfig {
         minSdkVersion 21
-        targetSdkVersion 30
+        targetSdkVersion 28
         versionCode 1
         versionName "1.0"
 
@@ -38,9 +38,19 @@ android {
         targetCompatibility 1.8
     }
 }
-
+flavorDimensions "tfliteInference"
+productFlavors {
+    // The TFLite recyclable is built using the TFLite Java API.
+    interpreter {
+        dimension "tfliteInference"
+    }
+    // The TFLite recyclable is built using the TFLite Task library.
+    taskApi {
+        dimension "tfliteInference"
+    }
+}
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(dir: 'libs', include: ['*.jar','*.aar'])
     implementation 'androidx.appcompat:appcompat:1.1.0'
 
     // Build off of nightly TensorFlow Lite

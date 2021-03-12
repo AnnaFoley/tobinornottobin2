@@ -3,10 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.tobinornottobin2">
 
+    <uses-sdk
+        android:minSdkVersion="21"
+        android:targetSdkVersion="28"/>
+   <!-- <uses-permission android:name="android.permission.WAKE_LOCK" />-->
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-feature android:name="android.hardware.camera" />
-
-    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera" android:required="true"/>
+   <uses-feature android:name="android.hardware.camera2.full" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
     <uses-feature android:glEsVersion="0x00010001" android:required="true" />
     <application
@@ -16,7 +19,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Tobinornottobin2">
-        <activity android:name="com.example.tobinornottobin2.ObjectDetection.ObjectDetection.CameraActivity">
+        <activity android:name="com.example.tobinornottobin2.ObjectDetection.ObjectDetection.CameraActivity"
+            tools:ignore="Instantiatable">
         </activity>
         <activity
             android:name="com.example.tobinornottobin2.ObjectDetection.ObjectDetection.DetectorActivity"
@@ -28,8 +32,6 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".FunFacts" />
-        <activity android:name=".ClimateChange" />
         <activity android:name=".Results" />
         <activity android:name=".ScanItem">
             <intent-filter>
@@ -41,15 +43,11 @@
             android:name=".UserService"
             android:enabled="true"
             android:exported="true" />
-        <service
-            android:name=".FactsService"
-            android:enabled="true"
-            android:exported="true" />
         <activity
             android:name="com.example.tobinornottobin2.ObjectDetection.ObjectDetection.ScanActivity"
             android:enabled="true"
             android:exported="true"
-            tools:ignore="Instantiatable" />
+             />
 
     </application>
 

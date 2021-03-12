@@ -60,25 +60,19 @@ public class  AutoFitTextureView  extends TextureView{
 
 
     protected void onMeasure(final int widthMeasureSpec, final int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        final int width = View.MeasureSpec.getSize(widthMeasureSpec);
-        final int height = View.MeasureSpec.getSize(heightMeasureSpec);
+        super.onMeasure( widthMeasureSpec, heightMeasureSpec );
+        final int width = View.MeasureSpec.getSize( widthMeasureSpec );
+        final int height = View.MeasureSpec.getSize( heightMeasureSpec );
         if (0 == ratioWidth || 0 == ratioHeight) {
-            setMeasuredDimension(width, height);
+            setMeasuredDimension( width, height );
         } else {
             if (width < height * ratioWidth / ratioHeight) {
-                setMeasuredDimension(width, width * ratioHeight / ratioWidth);
+                setMeasuredDimension( width, width * ratioHeight / ratioWidth );
             } else {
-                setMeasuredDimension(height * ratioWidth / ratioHeight, height);
+                setMeasuredDimension( height * ratioWidth / ratioHeight, height );
             }
         }
     }
-
-
-
-
-
-
 
    public void setSurfaceTextureListener(TextureView.SurfaceTextureListener surfaceTextureListener) {
    }
@@ -93,6 +87,5 @@ public class  AutoFitTextureView  extends TextureView{
     public boolean isAvailable() {
       return false;
     }
-
 
 }

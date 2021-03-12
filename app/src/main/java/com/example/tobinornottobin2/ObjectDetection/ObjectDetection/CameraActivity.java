@@ -1,33 +1,37 @@
+
 package com.example.tobinornottobin2.ObjectDetection.ObjectDetection;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
-import android.app.Fragment;
+//import android.app.Fragment;
+import androidx.annotation.RequiresApi;
+import androidx.fragment.app.Fragment;
+
+import android.hardware.Camera;
+import  android.support.v4.app.*;
+
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.hardware.Camera;
+import android.graphics.BitmapFactory;
 import android.hardware.camera2.CameraAccessException;
+import android.hardware.camera2.CameraCaptureSession;
 import android.hardware.camera2.CameraCharacteristics;
+import android.hardware.camera2.CameraDevice;
 import android.hardware.camera2.CameraManager;
+import android.hardware.camera2.CaptureRequest;
 import android.hardware.camera2.params.StreamConfigurationMap;
 import android.media.Image;
 import android.media.Image.Plane;
 import android.media.ImageReader;
 import android.media.ImageReader.OnImageAvailableListener;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Trace;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.util.Size;
 import android.view.Surface;
-import android.view.SurfaceHolder;
-import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
@@ -38,32 +42,24 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.tobinornottobin2.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.database.annotations.NotNull;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
-import java.io.IOException;
 import java.nio.ByteBuffer;
+
+import static androidx.constraintlayout.motion.utils.Oscillator.TAG;
 
 
 public abstract class CameraActivity extends AppCompatActivity
@@ -75,7 +71,12 @@ public abstract class CameraActivity extends AppCompatActivity
     //Code susan
     public static final int CAMERA_PERM_CODE = 101;
     public static final int CAMERA_REQUEST_CODE = 100;
-    //
+
+    /**
+     * ID of the current {@link CameraDevice}.
+     */
+    private String cameraId;
+
     private static final Logger LOGGER = new Logger();
 
     private static final int PERMISSIONS_REQUEST = 1;
@@ -99,34 +100,45 @@ public abstract class CameraActivity extends AppCompatActivity
     private BottomSheetBehavior<LinearLayout> sheetBehavior;
 
     protected TextView materialValueTextView, nameValueTextView, inferenceTimeTextView;
-    protected ImageView bottomSheetArrowImageView, Cameraimageview;
+    protected ImageView bottomSheetArrowImageView;
     private ImageView plusImageView, minusImageView;
     private SwitchCompat apiSwitchCompat;
-    private TextView threadsTextView, recyclableTextView;
-    private String image_uri;
+    private TextView threadsTextView, recyclableTextView, cleanTextView, noteTextView;
+    private CameraDevice camera;
 
+    /**
+     * The input size in pixels desired by TensorFlow (width and height of a square bitmap).
+     */
+    private final Size inputSize;
+   // private Object CameraActivity;
 
+    protected CameraActivity(TextView recyclableTextView, Size inputSize) {
+        this.recyclableTextView = recyclableTextView;
+        this.inputSize = inputSize;
+    }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override //creating a space for the image captured from the camera
     protected void onCreate(final Bundle savedInstanceState) {
-        //Code below modified from How to Upload Images to Firebase from an Android App, Chinedu Izuchukwu
-//https://code.tutsplus.com/tutorials/image-upload-to-firebase-in-android-application--cms-29934
-
-        LOGGER.d("onCreate " + this);
+                LOGGER.d("onCreate " + this);
         super.onCreate(null);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         setContentView(R.layout.tfe_od_activity_camera);
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.barmenubar2);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 //ensuring the app has perission to use the camera
         if (hasPermission()) {
-            setFragment();
+            try {
+                setFragment();
+            } catch (CameraAccessException exception) {
+                exception.printStackTrace();
+            }
+
         } else {
             requestPermission();
         }
-
 
         threadsTextView = findViewById(R.id.threads);
         plusImageView = findViewById(R.id.plus);
@@ -136,7 +148,7 @@ public abstract class CameraActivity extends AppCompatActivity
         gestureLayout = findViewById(R.id.gesture_layout);
         sheetBehavior = BottomSheetBehavior.from(bottomSheetLayout);
         bottomSheetArrowImageView = findViewById(R.id.bottom_sheet_arrow);
-        Cameraimageview = findViewById(R.id.Cameraimageview);
+
         ViewTreeObserver vto = gestureLayout.getViewTreeObserver();
         vto.addOnGlobalLayoutListener(
                 new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -146,7 +158,7 @@ public abstract class CameraActivity extends AppCompatActivity
                             gestureLayout.getViewTreeObserver().removeGlobalOnLayoutListener(this);
                         } else {
                             gestureLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                        }
+                       }
                         //                int width = bottomSheetLayout.getMeasuredWidth();
                         int height = gestureLayout.getMeasuredHeight();
 
@@ -155,7 +167,7 @@ public abstract class CameraActivity extends AppCompatActivity
                 });
         sheetBehavior.setHideable(false);
 
-        sheetBehavior.setBottomSheetCallback(
+        sheetBehavior.addBottomSheetCallback(
                 new BottomSheetBehavior.BottomSheetCallback() {
                     @Override
                     public void onStateChanged(@NonNull View bottomSheet, int newState) {
@@ -187,7 +199,10 @@ public abstract class CameraActivity extends AppCompatActivity
 
         nameValueTextView = findViewById(R.id.name_info);
         materialValueTextView = findViewById(R.id.material_info);
-        inferenceTimeTextView = findViewById(R.id.recyclable_info);
+        cleanTextView = findViewById(R.id.clean_info );
+        noteTextView = findViewById(R.id.note_info);
+        recyclableTextView = findViewById(R.id.recyclable_info );
+        //inferenceTimeTextView = findViewById(R.id.recyclable_info);
 
         apiSwitchCompat.setOnCheckedChangeListener(this);
 
@@ -196,55 +211,16 @@ public abstract class CameraActivity extends AppCompatActivity
 
     //initializing the database and the text object
         db = FirebaseFirestore.getInstance();
-
-
     }
-//Code below modified from How to Upload Images to Firebase from an Android App, Chinedu Izuchukwu
-//https://code.tutsplus.com/tutorials/image-upload-to-firebase-in-android-application--cms-29934
-//
-//    private void askCameraPermission(){
-//        if( ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
-//            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, CAMERA_PERM_CODE);
-//            Toast.makeText(CameraActivity.this, "Camera permission is required to continue", Toast.LENGTH_SHORT).show();
-//        }else{
-//            openCamera();
-//            //Permission granted
+//    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+//    public static void removeOnGlobalLayoutListener(View v, ViewTreeObserver.OnGlobalLayoutListener listener){
+//        if (Build.VERSION.SDK_INT < 16) {
+//            v.getViewTreeObserver().removeGlobalOnLayoutListener(listener);
+//        } else {
+//            v.getViewTreeObserver().removeOnGlobalLayoutListener(listener);
 //        }
 //    }
-//
-////    private  void openCamera(){
-////        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-////        startActivityForResult(cameraIntent, CAMERA_REQUEST_CODE);
-////    }
-//
-//    @Override
-//    public void onRequestPermissionsResult(int requestCode, @NonNull String[]  permissions, @NonNull int[] grantResults){
-//        if (grantResults.length < 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-//            openCamera();
-//        }
-//    }
-//    @NonNull
-//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//
-////From camera
-//        if (requestCode == CAMERA_REQUEST_CODE) {
-//
-//
-////Code below modified from Capture Image & Display in ImageView | Android App Development Tutorials | Part 1, SmallAcademy
-////https://youtu.be/s1aOlr3vbbk
-//            final Bitmap image; //Temporary storage for the image taken
-//            if (data != null) {
-//                if (data.hasExtra("data")) {
-//                    //Fill the imageview with the image taken
-//                    image = (Bitmap) data.getExtras().get("data");
-//                    Cameraimageview.setImageBitmap(image);
-//                    Cameraimageview.setImageURI(Uri.parse(image_uri));
-//                    //END
-//                }
-//            }
-//        }
-//    }
+
     public void ReadItemDetails(){
         DocumentReference user = db.collection("recyclable").document();
         user.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -264,6 +240,14 @@ public abstract class CameraActivity extends AppCompatActivity
                     StringBuilder fieldsr = new StringBuilder("");
                     fieldsr.append("recyclable").append(doc.get("recyclable"));
                     recyclableTextView.setText(fieldsm.toString());
+                    //to see if the item isrecyclable or not from the database
+                    StringBuilder fieldsc = new StringBuilder("");
+                    fieldsr.append("clean").append(doc.get("clean"));
+                    cleanTextView.setText(fieldsm.toString());
+                    //to see if the item isrecyclable or not from the database
+                    StringBuilder fieldsnote = new StringBuilder("");
+                    fieldsnote.append("note").append(doc.get("note"));
+                    noteTextView.setText(fieldsm.toString());
                 }
             }
 
@@ -289,22 +273,46 @@ public abstract class CameraActivity extends AppCompatActivity
         return yuvBytes[0];
     }
 
+    
+    public final ImageReader.OnImageAvailableListener mOnImageAvailableListener = new ImageReader.OnImageAvailableListener() {
+        @Override
+        public void onImageAvailable(ImageReader reader) {
+            Image image = null;
+            try {
+                image = reader.acquireLatestImage();
+                if (image != null) {
+                    ByteBuffer buffer = image.getPlanes()[0].getBuffer();
+                    Bitmap bitmap = fromByteBuffer( buffer );
+                    image.close();
+                }
+            } catch (Exception e) {
+                Log.w( TAG, e.getMessage() );
+            }
+        }
+    };
+
+    Bitmap fromByteBuffer(ByteBuffer buffer) {
+        byte[] bytes = new byte[buffer.capacity()];
+        buffer.get( bytes, 0, bytes.length );
+        return BitmapFactory.decodeByteArray( bytes, 0, bytes.length );
+    }
+
     /** Callback for android.hardware.Camera API */
-    @Override
-    public void onPreviewFrame(final byte[] bytes, final Camera camera) {
+    public void onPreviewFrame(final byte[] bytes, final CameraDevice camera) {
         if (isProcessingFrame) {
             LOGGER.w("Dropping frame!");
             return;
         }
-
+ImageReader reader = null;
+        final Image image = reader.acquireLatestImage();
         try {
             // Initialize the storage bitmaps once when the resolution is known.
             if (rgbBytes == null) {
-                Camera.Size previewSize = camera.getParameters().getPreviewSize();
-                previewHeight = previewSize.height;
-                previewWidth = previewSize.width;
+                Size previewSize = null;
+                previewHeight = previewSize.getHeight();
+                previewWidth = previewSize.getWidth();
                 rgbBytes = new int[previewWidth * previewHeight];
-                onPreviewSizeChosen(new Size(previewSize.width, previewSize.height), 90);
+                onPreviewSizeChosen(new Size(previewSize.getWidth(), previewSize.getHeight()), 90);
             }
         } catch (final Exception e) {
             LOGGER.e(e, "Exception!");
@@ -327,8 +335,10 @@ public abstract class CameraActivity extends AppCompatActivity
                 new Runnable() {
                     @Override
                     public void run() {
-                        camera.addCallbackBuffer(bytes);
-                        isProcessingFrame = false;
+                        image.close();
+                       // reader.OnImageAvailableListener(bytes);
+                            isProcessingFrame = false;
+
                     }
                 };
         processImage();
@@ -397,7 +407,6 @@ public abstract class CameraActivity extends AppCompatActivity
         }
         Trace.endSection();
     }
-
     @Override
     public synchronized void onStart() {
         LOGGER.d("onStart " + this);
@@ -449,13 +458,18 @@ public abstract class CameraActivity extends AppCompatActivity
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onRequestPermissionsResult(
             final int requestCode, final String[] permissions, final int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == PERMISSIONS_REQUEST) {
             if (allPermissionsGranted(grantResults)) {
-                setFragment();
+                try {
+                    setFragment();
+                } catch (CameraAccessException e) {
+                    e.printStackTrace();
+                }
             } else {
                 requestPermission();
            }
@@ -541,9 +555,9 @@ public abstract class CameraActivity extends AppCompatActivity
         return null;
     }
 
-    protected void setFragment() {
-        String cameraId = chooseCamera();
 
+    protected void setFragment() throws CameraAccessException {
+        String cameraId = chooseCamera();
         Fragment fragment;
         if (useCamera2API) {
             CameraConnectionFragment camera2Fragment =
@@ -556,18 +570,28 @@ public abstract class CameraActivity extends AppCompatActivity
                                     CameraActivity.this.onPreviewSizeChosen(size, rotation);
                                 }
                             },
+
                             this,
                             getLayoutId(),
                             getDesiredPreviewFrameSize());
 
+
             camera2Fragment.setCamera(cameraId);
+
             fragment = camera2Fragment;
         } else {
             fragment =
-                    new LegacycameraConnectionFragment(this, getLayoutId(), getDesiredPreviewFrameSize());
+                    new LegacycameraConnectionFragment(this, getLayoutId(), getDesiredPreviewFrameSize(), inputSize);
         }
-        getFragmentManager().beginTransaction().add(R.id.Cameraimageview, fragment).commit();
+        getSupportFragmentManager().beginTransaction().add( R.id.cameraFragment, fragment).commit();
+
+//        FragmentManager fm = getSupportFragmentManager();
+//        FragmentTransaction ft = fm.beginTransaction();
+//         ft.replace(R.id.containerCamera, fragment );
+//                 ft.commit();
+
     }
+
 
     protected void fillBytes(final Plane[] planes, final byte[][] yuvBytes) {
         // Because of the variable row stride it's not possible to know in
@@ -581,6 +605,7 @@ public abstract class CameraActivity extends AppCompatActivity
             buffer.get(yuvBytes[i]);
         }
     }
+
 
     public boolean isDebug() {
         return debug;

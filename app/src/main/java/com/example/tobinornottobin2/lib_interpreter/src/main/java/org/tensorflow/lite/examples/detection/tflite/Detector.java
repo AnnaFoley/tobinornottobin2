@@ -17,12 +17,11 @@ package com.example.tobinornottobin2.lib_interpreter.src.main.java.org.tensorflo
 
 import android.graphics.Bitmap;
 import android.graphics.RectF;
-
-import java.util.ArrayList;
+import java.util.List;
 
 /** Generic interface for interacting with different recognition engines. */
 public interface Detector {
-  ArrayList<Recognition> recognizeImage(Bitmap bitmap);
+  List<Recognition> recognizeImage(Bitmap bitmap);
 
   void enableStatLogging(final boolean debug);
 
@@ -54,7 +53,7 @@ public interface Detector {
     private RectF location;
 
     public Recognition(
-            final String id, final String title, final Float confidence, final RectF location) {
+        final String id, final String title, final Float confidence, final RectF location) {
       this.id = id;
       this.title = title;
       this.confidence = confidence;

@@ -25,22 +25,8 @@ public abstract class Results extends AppCompatActivity  {
 
             }
         });
-      ImageButton btnFacts = (ImageButton) findViewById(R.id.btnFunfacts2);
-        btnFacts.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent moveFactsPage = new Intent(com.example.tobinornottobin2.Results.this, FunFacts.class);
-                startActivity(moveFactsPage);
-            }
-        });
 
-   ImageButton btnClimate= (ImageButton) findViewById(R.id.btnClimateChange2);
-        btnClimate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent moveClimatePage = new Intent(com.example.tobinornottobin2.Results.this, ClimateChange.class);
-                startActivity(moveClimatePage);
-            }
-        });
+
+
     }
 }

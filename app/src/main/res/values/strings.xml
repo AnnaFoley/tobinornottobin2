@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">tobinornottobin2</string>
+    <string name="menubar">menubar</string>
+    <string name="take_picture">Take picture</string>
 </resources>

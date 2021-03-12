@@ -15,6 +15,8 @@ limitations under the License.
 
 package com.example.tobinornottobin2.lib_interpreter.src.main.java.org.tensorflow.lite.examples.detection.tflite;
 
+import static java.lang.Math.min;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.AssetFileDescriptor;
@@ -23,10 +25,6 @@ import android.graphics.Bitmap;
 import android.graphics.RectF;
 import android.os.Trace;
 import android.util.Log;
-
-import org.tensorflow.lite.Interpreter;
-import org.tensorflow.lite.support.metadata.MetadataExtractor;
-
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -40,8 +38,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static java.lang.Math.min;
+import org.tensorflow.lite.Interpreter;
+import org.tensorflow.lite.support.metadata.MetadataExtractor;
 
 /**
  * Wrapper for frozen detection models trained using the Tensorflow Object Detection API: -
@@ -59,7 +57,7 @@ import static java.lang.Math.min;
 public class TFLiteObjectDetectionAPIModel implements Detector {
   private static final String TAG = "TFLiteObjectDetectionAPIModelWithInterpreter";
 
-  // Only return this many results.
+    // Only return this many results.
   private static final int NUM_DETECTIONS = 10;
   // Float model
   private static final float IMAGE_MEAN = 127.5f;
@@ -91,14 +89,11 @@ public class TFLiteObjectDetectionAPIModel implements Detector {
   private Interpreter.Options tfLiteOptions;
   private Interpreter tfLite;
 
-  private TFLiteObjectDetectionAPIModel() {
-  }
+  private TFLiteObjectDetectionAPIModel() {}
 
-  /**
-   * Memory-map the model file in Assets. Model file is the image being detected
-   */
+  /** Memory-map the model file in Assets. */
   private static MappedByteBuffer loadModelFile(AssetManager assets, String modelFilename)
-          throws IOException {
+      throws IOException {
     AssetFileDescriptor fileDescriptor = assets.openFd(modelFilename);
     FileInputStream inputStream = new FileInputStream(fileDescriptor.getFileDescriptor());
     FileChannel fileChannel = inputStream.getChannel();
@@ -112,25 +107,25 @@ public class TFLiteObjectDetectionAPIModel implements Detector {
    *
    * @param modelFilename The model file path relative to the assets folder
    * @param labelFilename The label file path relative to the assets folder
-   * @param inputSize     The size of image input
-   * @param isQuantized   Boolean representing model is quantized or not
+   * @param inputSize The size of image input
+   * @param isQuantized Boolean representing model is quantized or not
    */
   @SuppressLint("LongLogTag")
   public static Detector create(
-          final Context context,
-          final String modelFilename,
-          final String labelFilename,
-          final int inputSize,
-          final boolean isQuantized)
-          throws IOException {
+      final Context context,
+      final String modelFilename,
+      final String labelFilename,
+      final int inputSize,
+      final boolean isQuantized)
+      throws IOException {
     final TFLiteObjectDetectionAPIModel d = new TFLiteObjectDetectionAPIModel();
 
     MappedByteBuffer modelFile = loadModelFile(context.getAssets(), modelFilename);
     MetadataExtractor metadata = new MetadataExtractor(modelFile);
     try (BufferedReader br =
-                 new BufferedReader(
-                         new InputStreamReader(
-                                 metadata.getAssociatedFile(labelFilename), Charset.defaultCharset()))) {
+        new BufferedReader(
+            new InputStreamReader(
+                metadata.getAssociatedFile(labelFilename), Charset.defaultCharset()))) {
       String line;
       while ((line = br.readLine()) != null) {
         Log.w(TAG, line);
@@ -151,7 +146,7 @@ public class TFLiteObjectDetectionAPIModel implements Detector {
       throw new RuntimeException(e);
     }
 
-    d.isModelQuantized = isQuantized;//Quantization is image processing
+    d.isModelQuantized = isQuantized;
     // Pre-allocate buffers.
     int numBytesPerChannel;
     if (isQuantized) {
@@ -167,12 +162,11 @@ public class TFLiteObjectDetectionAPIModel implements Detector {
     d.outputClasses = new float[1][NUM_DETECTIONS];
     d.outputScores = new float[1][NUM_DETECTIONS];
     d.numDetections = new float[1];
-    return (Detector) d;
+    return d;
   }
 
-
   @Override
-  public ArrayList<Recognition> recognizeImage(final Bitmap bitmap) {
+  public List<Recognition> recognizeImage(final Bitmap bitmap) {
     // Log this method so that it can be analyzed with systrace.
     Trace.beginSection("recognizeImage");
 
@@ -214,7 +208,7 @@ public class TFLiteObjectDetectionAPIModel implements Detector {
     outputMap.put(3, numDetections);
     Trace.endSection();
 
-    // Run the recyclable call.
+    // Run the inference call.
     Trace.beginSection("run");
     tfLite.runForMultipleInputsOutputs(inputArray, outputMap);
     Trace.endSection();
